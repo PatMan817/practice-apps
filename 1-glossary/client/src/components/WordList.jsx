@@ -14,7 +14,14 @@ class WordList extends React.Component {
       alert('Please enter word and definition')
     } else {
       this.props.onAdd(this.state.enteredWord, this.state.enteredDef)
+      this.setState({enteredWord: '', enteredDef: ''})
     }
+  }
+
+  edit(e) {
+    let index = e.target.id
+    let newDef = prompt("Please enter new definition.")
+    this.props.onAdd(this.props.filteredWords[index].word, newDef, index)
   }
 
   enterWord (e) {
@@ -44,7 +51,6 @@ class WordList extends React.Component {
             <tr>
               <th>Word</th>
               <th>Definition</th>
-              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -53,7 +59,8 @@ class WordList extends React.Component {
                 return (<tr>
                   <td>{word.word}</td>
                   <td>{word.definition}</td>
-                  <td><button onClick={this.props.deleteWord.bind(this)} id={index}>X</button></td>
+                  <td><button onClick={this.edit.bind(this)} className="editButton" id={index}>Edit</button></td>
+                  <td><button onClick={this.props.deleteWord.bind(this)} className="deleteButton" id={index}>Delete</button></td>
                 </tr>)
               }
               )}

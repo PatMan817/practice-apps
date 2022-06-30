@@ -19,11 +19,16 @@ class App extends React.Component {
     this.getWords();
   }
 
-  addWord(word, definition) {
-    console.log(`Word ${word} was added with definition ${definition}.`)
+  addWord(word, definition, wordIndex = -1) {
     let words = [...this.state.words];
-    if (words.indexOf(word) !== -1) {
-      words[words.indexOf(word)] definition
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].word === word) {
+        wordIndex = i
+        break
+      }
+    }
+    if (wordIndex !== -1) {
+      words[wordIndex].definition = definition;
     } else {
       words.push({word: word, definition: definition});
     }
@@ -34,11 +39,9 @@ class App extends React.Component {
   }
 
   deleteWord(e) {
-    console.log(`Word ${e.target.id} has been deleted.`)
     let words = [...this.state.words];
     let wordIndex = e.target.id;
     let deletedWord = words[wordIndex];
-    console.log('delete in APP', deletedWord)
     words.splice(wordIndex, 1);
     axios.delete('/words', {data: deletedWord})
       .then((response) => alert(response.data))
