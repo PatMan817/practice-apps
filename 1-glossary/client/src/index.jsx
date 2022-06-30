@@ -11,27 +11,44 @@ class App extends React.Component {
       words: [],
       filteredWords: []
     }
-    //this.addWord.bind(this);
     this.search.bind(this);
+    this.getWords.bind(this);
   }
 
-  //componentDidMount() {
-  //  this.getWords();
-  //}
+  componentDidMount() {
+    this.getWords();
+  }
 
   addWord(word, definition) {
     console.log(`Word ${word} was added with definition ${definition}.`)
     let words = [...this.state.words];
-    words.push({word: word, definition: definition});
+    if (words.indexOf(word) !== -1) {
+      words[words.indexOf(word)] definition
+    } else {
+      words.push({word: word, definition: definition});
+    }
     axios.post('/words', {word: word, definition: definition})
-      .then((response) => alert(response))
+      .then((response) => alert(response.data))
       .catch((error) => console.error(error))
-    this.setState({words: words});
+    this.setState({words: words, filteredWords: words});
+  }
+
+  deleteWord(e) {
+    console.log(`Word ${e.target.id} has been deleted.`)
+    let words = [...this.state.words];
+    let wordIndex = e.target.id;
+    let deletedWord = words[wordIndex];
+    console.log('delete in APP', deletedWord)
+    words.splice(wordIndex, 1);
+    axios.delete('/words', {data: deletedWord})
+      .then((response) => alert(response.data))
+      .catch((err) => console.error(err))
+    this.setState({words: words, filteredWords: words});
   }
 
   getWords() {
     axios.get('/words')
-      .then((wordData) => this.setState({words: JSON.parse(wordData)}))
+      .then((wordData) => this.setState({words: wordData.data, filteredWords: wordData.data}))
       .catch((err) => console.error(err))
   }
 
@@ -43,7 +60,8 @@ class App extends React.Component {
     return (
     <div>
       <h1>Glossary</h1>
-      <WordList onAdd={this.addWord.bind(this)}/>
+      <Search />
+      <WordList filteredWords={this.state.filteredWords} deleteWord={this.deleteWord.bind(this)} onAdd={this.addWord.bind(this)}/>
     </div>
     )
   }
