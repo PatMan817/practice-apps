@@ -40,7 +40,15 @@ class App extends React.Component {
 
   deleteWord(e) {
     let words = [...this.state.words];
-    let wordIndex = e.target.id;
+    let word = e.target.id;
+    console.log(word)
+    let wordIndex = -1
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].word === word) {
+        wordIndex = i
+        break
+      }
+    }
     let deletedWord = words[wordIndex];
     words.splice(wordIndex, 1);
     axios.delete('/words', {data: deletedWord})
@@ -55,15 +63,23 @@ class App extends React.Component {
       .catch((err) => console.error(err))
   }
 
-  search(term) {
-
+  search(searchedTerm) {
+    let words = [...this.state.words];
+    let results = [];
+    console.log(searchedTerm)
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].word.includes(searchedTerm) || words[i].definition.includes(searchedTerm)) {
+        results.push(words[i])
+      }
+    }
+    this.setState({filteredWords: results})
   }
 
   render () {
     return (
     <div>
       <h1>Glossary</h1>
-      <Search />
+      <Search search={this.search.bind(this)}/>
       <WordList filteredWords={this.state.filteredWords} deleteWord={this.deleteWord.bind(this)} onAdd={this.addWord.bind(this)}/>
     </div>
     )

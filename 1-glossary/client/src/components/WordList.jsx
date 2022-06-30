@@ -60,7 +60,7 @@ class WordList extends React.Component {
                   <td>{word.word}</td>
                   <td>{word.definition}</td>
                   <td><button onClick={this.edit.bind(this)} className="editButton" id={index}>Edit</button></td>
-                  <td><button onClick={this.props.deleteWord.bind(this)} className="deleteButton" id={index}>Delete</button></td>
+                  <td><button onClick={this.props.deleteWord.bind(this)} className="deleteButton" id={word.word}>Delete</button></td>
                 </tr>)
               }
               )}
