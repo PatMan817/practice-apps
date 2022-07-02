@@ -14,7 +14,7 @@ class WordList extends React.Component {
       alert('Please enter word and definition')
     } else {
       this.props.onAdd(this.state.enteredWord, this.state.enteredDef)
-      this.setState({enteredWord: '', enteredDef: ''})
+      this.setState({ enteredWord: '', enteredDef: '' })
     }
   }
 
@@ -24,13 +24,13 @@ class WordList extends React.Component {
     this.props.onAdd(this.props.filteredWords[index].word, newDef, index)
   }
 
-  enterWord (e) {
+  enterWord(e) {
     this.setState({
       enteredWord: e.target.value
     });
   }
 
-  enterDefinition (e) {
+  enterDefinition(e) {
     this.setState({
       enteredDef: e.target.value
     });
@@ -39,35 +39,35 @@ class WordList extends React.Component {
   render() {
     let index = -1;
     return (
-    <div>
-      <div id="inputDiv">
-        <input id="wordInput" placeholder="Enter word" value={this.state.enteredWord} onChange={this.enterWord.bind(this)}></input>
-        <input id="definitionInput" placeholder="Enter definition" value={this.state.enteredDef} onChange={this.enterDefinition.bind(this)}></input>
-        <button onClick={this.add.bind(this)}>Add Word</button>
-      </div>
       <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Word</th>
-              <th>Definition</th>
-            </tr>
-          </thead>
-          <tbody>
+        <div id="inputDiv">
+          <input id="wordInput" placeholder="Enter word" value={this.state.enteredWord} onChange={this.enterWord.bind(this)}></input>
+          <input id="definitionInput" placeholder="Enter definition" value={this.state.enteredDef} onChange={this.enterDefinition.bind(this)}></input>
+          <button onClick={this.add.bind(this)}>Add Word</button>
+        </div>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th>Definition</th>
+              </tr>
+            </thead>
+            <tbody>
               {this.props.filteredWords.map((word) => {
                 index++
                 return (<tr>
-                  <td>{word.word}</td>
+                  <td><b>{word.word}</b></td>
                   <td>{word.definition}</td>
                   <td><button onClick={this.edit.bind(this)} className="editButton" id={index}>Edit</button></td>
                   <td><button onClick={this.props.deleteWord.bind(this)} className="deleteButton" id={word.word}>Delete</button></td>
                 </tr>)
               }
               )}
-          </tbody>
-        </table>
-      </div>
-    </div>)
+            </tbody>
+          </table>
+        </div>
+      </div>)
   }
 }
 

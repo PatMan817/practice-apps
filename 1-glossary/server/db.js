@@ -13,22 +13,24 @@ let glossarySchema = mongoose.Schema({
   definition: {
     type: String,
     required: true
-}
+  }
 });
 
 let Entry = mongoose.model('Entry', glossarySchema);
 
 function remove(deletedWord) {
   console.log('calling delete in DB')
-  return Entry.deleteOne({word: deletedWord})
+  return Entry.deleteOne({ word: deletedWord })
 }
 
 function save(wordObj) {
-  return Entry.find({word: wordObj.word})
-    .then((array) => {if (array.length > 0) {
-      return Entry.findOneAndDelete({word: wordObj.word})
-        .catch((err) => console.error(err))
-    }})
+  return Entry.find({ word: wordObj.word })
+    .then((array) => {
+      if (array.length > 0) {
+        return Entry.findOneAndDelete({ word: wordObj.word })
+          .catch((err) => console.error(err))
+      }
+    })
     .then(() => Entry.create(wordObj))
     .then(() => 'Word Saved')
     .catch((err) => console.error(err))
@@ -37,7 +39,7 @@ function save(wordObj) {
 function getWords(callback) {
   //let wordArray = [];
   console.log('calling getWords in DB')
-  Entry.find().sort({word: 1})
+  Entry.find().sort({ word: 1 })
     .exec(callback)
 }
 // 3. Export the models

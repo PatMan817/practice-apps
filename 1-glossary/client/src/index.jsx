@@ -30,12 +30,12 @@ class App extends React.Component {
     if (wordIndex !== -1) {
       words[wordIndex].definition = definition;
     } else {
-      words.push({word: word, definition: definition});
+      words.push({ word: word, definition: definition });
     }
-    axios.post('/words', {word: word, definition: definition})
+    axios.post('/words', { word: word, definition: definition })
       .then((response) => alert(response.data))
       .catch((error) => console.error(error))
-    this.setState({words: words, filteredWords: words});
+    this.setState({ words: words, filteredWords: words });
   }
 
   deleteWord(e) {
@@ -51,15 +51,15 @@ class App extends React.Component {
     }
     let deletedWord = words[wordIndex];
     words.splice(wordIndex, 1);
-    axios.delete('/words', {data: deletedWord})
+    axios.delete('/words', { data: deletedWord })
       .then((response) => alert(response.data))
       .catch((err) => console.error(err))
-    this.setState({words: words, filteredWords: words});
+    this.setState({ words: words, filteredWords: words });
   }
 
   getWords() {
     axios.get('/words')
-      .then((wordData) => this.setState({words: wordData.data, filteredWords: wordData.data}))
+      .then((wordData) => this.setState({ words: wordData.data, filteredWords: wordData.data }))
       .catch((err) => console.error(err))
   }
 
@@ -72,16 +72,16 @@ class App extends React.Component {
         results.push(words[i])
       }
     }
-    this.setState({filteredWords: results})
+    this.setState({ filteredWords: results })
   }
 
-  render () {
+  render() {
     return (
-    <div>
-      <h1>Glossary</h1>
-      <Search search={this.search.bind(this)}/>
-      <WordList filteredWords={this.state.filteredWords} deleteWord={this.deleteWord.bind(this)} onAdd={this.addWord.bind(this)}/>
-    </div>
+      <div>
+        <h1>Glossary</h1>
+        <Search search={this.search.bind(this)} />
+        <WordList filteredWords={this.state.filteredWords} deleteWord={this.deleteWord.bind(this)} onAdd={this.addWord.bind(this)} />
+      </div>
     )
   }
 }

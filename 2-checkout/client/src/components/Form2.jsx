@@ -20,7 +20,7 @@ const Form2 = (props) => {
           <input type="number" required minLength="5" maxLength="5" id="zipCode" value={props.appState.zipCode} onChange={props.handleChange} />
         </label><br /><br />
         <label>
-         Phone Number:
+          Phone Number:
           <input type="tel" required minLength="9" maxLength="14" id="phoneNum" value={props.appState.phoneNum} onChange={props.handleChange} />
         </label><br /><br />
         <button next='Form1' onClick={props.buttonHandler}>Back</button>

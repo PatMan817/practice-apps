@@ -8,7 +8,7 @@ class Search extends React.Component {
     }
   }
 
-  enterWord (e) {
+  enterWord(e) {
     this.setState({
       enteredWord: e.target.value
     });
@@ -20,10 +20,10 @@ class Search extends React.Component {
 
   render() {
     return (
-    <div>
-      <input placeholder="Definition or word" value={this.state.enteredWord} onChange={this.enterWord.bind(this)}></input>
-      <button onClick={this.search.bind(this)}>Search</button>
-    </div>)
+      <div>
+        <input placeholder="Definition or word" value={this.state.enteredWord} onChange={this.enterWord.bind(this)}></input>
+        <button onClick={this.search.bind(this)}>Search</button>
+      </div>)
   }
 
 }

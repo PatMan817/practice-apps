@@ -33,7 +33,7 @@ class App extends React.Component {
     axios.get('/checkout')
       .then((res) => {
         if (res) {
-          this.setState({alreadyPurchased: true})
+          this.setState({ alreadyPurchased: true })
         }
       })
   }
@@ -66,7 +66,7 @@ class App extends React.Component {
   render() {
     switch (this.state.activePage) {
       case 'HomePage':
-        return <HomePage buttonHandler={this.buttonHandler.bind(this)} alreadyPurchased={this.state.alreadyPurchased}/>;
+        return <HomePage buttonHandler={this.buttonHandler.bind(this)} alreadyPurchased={this.state.alreadyPurchased} />;
       case 'Form1':
         return <Form1 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
       case 'Form2':

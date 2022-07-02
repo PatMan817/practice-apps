@@ -58,7 +58,7 @@ app.delete('/words', (req, res) => {
     .catch((err) => console.error(err))
 })
 
-app.patch('/words', (req, res) => {})
+app.patch('/words', (req, res) => { })
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

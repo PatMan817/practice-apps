@@ -1,6 +1,6 @@
 const Confirmation = (props) => (
   <>
-    <span>Please confirm your information.</span><br/>
+    <span>Please confirm your information.</span><br />
     <p>Name: {props.appState.name}</p>
     <p>E-Mail: {props.appState.email}</p>
     <p>Password: {props.appState.password}</p>

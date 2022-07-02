@@ -41,12 +41,12 @@ app.get('/checkout', ((req, res) => {
       sessionId: req.session_id
     }
   })
-  .then((data) => {
-    if (data.length > 0) {
-      res.send(true)
-    }
-  })
-  .catch((err) => console.error(err))
+    .then((data) => {
+      if (data.length > 0) {
+        res.send(true)
+      }
+    })
+    .catch((err) => console.error(err))
 }))
 
 app.listen(process.env.PORT);
