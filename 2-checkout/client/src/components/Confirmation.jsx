@@ -1,7 +1,7 @@
 const Confirmation = (props) => (
   <>
     <span>Confirmation is rendering!</span><br/>
-    <form>
+    <form onSubmit={props.purchaseButtonHandler}>
       <input type="submit" value="Purchase"></input>
     </form>
   </>

@@ -1,7 +1,6 @@
 const Form1 = (props) => {
   return (
     <>
-      <span>Form1 is rendering!</span><br />
       <form next="Form2" onSubmit={props.buttonHandler}>
         <label>
           Name:

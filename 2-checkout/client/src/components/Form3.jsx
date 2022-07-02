@@ -1,7 +1,6 @@
 const Form3 = (props) => {
   return (
     <>
-      <span>Form3 is rendering!</span><br />
       <form next="Confirmation" onSubmit={props.buttonHandler}>
         <label>
           Credit Card Number:

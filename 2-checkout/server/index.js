@@ -27,13 +27,26 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
  *
  *
  */
- const Response = require("./db").Response;
+const Response = require("./db").Response;
 
 app.post('/checkout', ((req, res) => {
-  console.log('Request', req.body)
   Response.create(req.body)
-    .then(() => res.send('Purchase Successsful'))
+    .then(() => res.send('Purchase Successful'))
     .catch((err) => console.error(err))
+}))
+
+app.get('/checkout', ((req, res) => {
+  Response.findAll({
+    where: {
+      sessionId: req.session_id
+    }
+  })
+  .then((data) => {
+    if (data.length > 0) {
+      res.send(true)
+    }
+  })
+  .catch((err) => console.error(err))
 }))
 
 app.listen(process.env.PORT);

@@ -19,46 +19,64 @@ class App extends React.Component {
       city: '',
       state: '',
       zipCode: '',
+      phoneNum: '',
       CCNum: '',
       expiration: '',
       CVV: '',
       billingZip: '',
-      activePage: 'HomePage'
+      activePage: 'HomePage',
+      alreadyPurchased: false
     }
   }
 
+  componentDidMount() {
+    axios.get('/checkout')
+      .then((res) => {
+        if (res) {
+          this.setState({alreadyPurchased: true})
+        }
+      })
+  }
+
   handleChange(e) {
-    this.setState({[e.target.id]: e.target.value})
+    this.setState({ [e.target.id]: e.target.value })
   }
 
   buttonHandler(event) {
     event.preventDefault();
-    console.log(event.target)
     let nextPage = event.target.getAttribute('next');
-    this.setState({activePage: nextPage})
+    this.setState({ activePage: nextPage })
+  }
+
+  purchaseButtonHandler() {
+    this.sendData()
+      .then((res) => alert(res.data))
+      .catch((err) => console.error(err))
   }
 
   sendData() {
     let userData = this.state;
     delete userData['activePage'];
-    axios.post('/checkout', userData)
+    delete userData['alreadyPurchased'];
+    return axios.post('/checkout', userData)
+      .then((res) => res)
+      .catch((err) => console.error(err))
   }
 
   render() {
     switch (this.state.activePage) {
       case 'HomePage':
-        return <HomePage buttonHandler={this.buttonHandler.bind(this)}/>;
+        return <HomePage buttonHandler={this.buttonHandler.bind(this)} alreadyPurchased={this.state.alreadyPurchased}/>;
       case 'Form1':
-        return <Form1 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state}/>;
+        return <Form1 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
       case 'Form2':
-        return <Form2 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state}/>;
+        return <Form2 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
       case 'Form3':
-        return <Form3 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state}/>;
+        return <Form3 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
       case 'Confirmation':
-        return(
+        return (
           <>
-            <Confirmation buttonHandler={this.buttonHandler.bind(this)}/>
-            <button onClick={this.sendData.bind(this)}>Send Data</button>
+            <Confirmation purchaseButtonHandler={this.purchaseButtonHandler.bind(this)} />
           </>
         )
       default:
