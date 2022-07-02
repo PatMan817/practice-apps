@@ -1,24 +1,29 @@
-import React from "react";
-
-class Form3 extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      enteredCCNum: '',
-      enteredExpiration: '',
-      enteredCVV: '',
-      enteredBillingZip: ''
-    }
-  }
-
-  render() {
-    return (
+const Form3 = (props) => {
+  return (
     <>
-      <span>Form3 is rendering!</span>
-      <button next="Confirmation" onClick={this.props.buttonHandler}>Next</button>
+      <span>Form3 is rendering!</span><br />
+      <form next="Confirmation" onSubmit={props.buttonHandler}>
+        <label>
+          Credit Card Number:
+          <input type="number" required id="CCNum" value={props.appState.CCNum} onChange={props.handleChange} />
+        </label><br /><br />
+        <label>
+          Expiration:
+          <input type="month" required id="expiration" value={props.appState.expiration} onChange={props.handleChange} />
+        </label><br /><br />
+        <label>
+          CVV:
+          <input type="password" required id="CVV" value={props.appState.CVV} onChange={props.handleChange} />
+        </label><br /><br />
+        <label>
+          Billing Zip Code:
+          <input type="number" required id="billingZip" value={props.appState.billingZip} onChange={props.handleChange} />
+        </label><br /><br />
+        <label></label>
+        <input type="submit" next="Confirmation" value="Next"></input>
+      </form>
     </>
-    )
-  }
+  )
 }
 
 export default Form3

@@ -5,7 +5,7 @@ const sessionHandler = require("./middleware/session-handler");
 const logger = require("./middleware/logger");
 
 // Establishes connection to the database on server start
-const db = require("./db");
+const db = require("./db").db;
 
 const app = express();
 app.use(express.json())
@@ -27,6 +27,14 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
  *
  *
  */
+ const Response = require("./db").Response;
+
+app.post('/checkout', ((req, res) => {
+  console.log('Request', req.body)
+  Response.create(req.body)
+    .then(() => res.send('Purchase Successsful'))
+    .catch((err) => console.error(err))
+}))
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

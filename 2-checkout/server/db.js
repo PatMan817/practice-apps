@@ -1,6 +1,29 @@
 const mysql = require("mysql2");
 const Promise = require("bluebird");
+const Sequelize = require('sequelize');
 
+const orm = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+  host: process.env.DB_HOST,
+  dialect: 'mysql',
+  define: {timestamps: false}
+})
+
+const Response = orm.define('response', {
+  id: {type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true},
+  sessionId: {type: Sequelize.STRING, unique: true},
+  name: Sequelize.STRING,
+  email: Sequelize.STRING,
+  password: Sequelize.STRING,
+  address1: Sequelize.STRING,
+  address2: Sequelize.STRING,
+  city: Sequelize.STRING,
+  state: Sequelize.STRING,
+  zipCode: Sequelize.STRING,
+  CCNum: Sequelize.INTEGER,
+  expiration: Sequelize.STRING,
+  CVV: Sequelize.INTEGER,
+  billingZip: Sequelize.STRING
+})
 // Configure process.env variables in ../.env
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -13,7 +36,8 @@ const db = Promise.promisifyAll(connection, { multiArgs: true });
 
 db.connectAsync()
   .then(() => console.log(`Connected to MySQL as id: ${db.threadId}`))
-  .then(() =>
+  .then(() => Response.sync())
+  /*.then(() =>
     // Expand this table definition as needed:
     db.queryAsync(
       `CREATE TABLE IF NOT EXISTS responses
@@ -32,7 +56,8 @@ db.connectAsync()
        CVV INT(3) NOT NULL,
        billingZip VARCHAR(20) NOT NULL)`
     )
-  )
+  )*/
   .catch((err) => console.log(err));
 
-module.exports = db;
+module.exports.db = db;
+module.exports.Response = Response;
