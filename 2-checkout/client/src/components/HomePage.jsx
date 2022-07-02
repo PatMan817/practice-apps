@@ -7,6 +7,7 @@ const HomePage = (props) => {
   } else {
     return (
       <>
+        🛒<br/>
         <button next="Form1" onClick={props.buttonHandler}>Checkout</button>
       </>
     )

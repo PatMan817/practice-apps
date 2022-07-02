@@ -74,11 +74,7 @@ class App extends React.Component {
       case 'Form3':
         return <Form3 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
       case 'Confirmation':
-        return (
-          <>
-            <Confirmation purchaseButtonHandler={this.purchaseButtonHandler.bind(this)} />
-          </>
-        )
+        return <Confirmation buttonHandler={this.buttonHandler.bind(this)} purchaseButtonHandler={this.purchaseButtonHandler.bind(this)} appState={this.state} />
       default:
         return <span>Error: Invalid Active Page</span>
     }

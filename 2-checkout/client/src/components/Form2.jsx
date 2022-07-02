@@ -17,12 +17,13 @@ const Form2 = (props) => {
         </label><br /><br />
         <label>
           Zip Code:
-          <input type="number" required id="zipCode" value={props.appState.zipCode} onChange={props.handleChange} />
+          <input type="number" required minLength="5" maxLength="5" id="zipCode" value={props.appState.zipCode} onChange={props.handleChange} />
         </label><br /><br />
         <label>
          Phone Number:
-          <input type="tel" required id="phoneNum" value={props.appState.phoneNum} onChange={props.handleChange} />
+          <input type="tel" required minLength="9" maxLength="14" id="phoneNum" value={props.appState.phoneNum} onChange={props.handleChange} />
         </label><br /><br />
+        <button next='Form1' onClick={props.buttonHandler}>Back</button>
         <input type="submit" next="Form3" value="Next"></input>
       </form>
     </>
