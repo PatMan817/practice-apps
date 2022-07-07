@@ -1,31 +1,30 @@
-import React from 'react';
+import { useState } from 'react';
 
-class Search extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      enteredWord: '',
-    }
+//class Search extends React.Component {
+//  constructor(props) {
+//    super(props);
+//    this.state = {
+//      enteredWord: '',
+//    }
+//  }
+
+const Search = props => {
+
+  const [enteredWord, setEnteredWord] = useState('');
+
+  const enterWord = e => {
+    setEnteredWord(e.target.value);
   }
 
-  enterWord(e) {
-    this.setState({
-      enteredWord: e.target.value
-    });
+  const search = () => {
+    props.search(enteredWord)
   }
 
-  search() {
-    this.props.search(this.state.enteredWord)
-  }
-
-  render() {
     return (
-      <div>
-        <input placeholder="Definition or word" value={this.state.enteredWord} onChange={this.enterWord.bind(this)}></input>
-        <button onClick={this.search.bind(this)}>Search</button>
-      </div>)
-  }
-
+      <>
+        <input placeholder="Definition or word" value={enteredWord} onChange={enterWord}></input>
+        <button onClick={search}>Search</button>
+      </>)
 }
 
 export default Search

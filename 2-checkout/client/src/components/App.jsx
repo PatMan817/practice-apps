@@ -1,61 +1,98 @@
-import React from "react";
+//import React from "react";
 import HomePage from './HomePage.jsx';
 import Form1 from './Form1.jsx';
 import Form2 from './Form2.jsx';
 import Form3 from './Form3.jsx';
 import Confirmation from './Confirmation.jsx';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      sessionId: JSON.stringify(document.cookie, undefined, "\t").slice(6, -1),
-      name: '',
-      email: '',
-      password: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      phoneNum: '',
-      CCNum: '',
-      expiration: '',
-      CVV: '',
-      billingZip: '',
-      activePage: 'HomePage',
-      alreadyPurchased: false
-    }
-  }
+//class App extends React.Component {
+//  constructor(props) {
+//    super(props)
+//    this.state = {
+//      sessionId: JSON.stringify(document.cookie, undefined, "\t").slice(6, -1),
+//      name: '',
+//      email: '',
+//      password: '',
+//      address1: '',
+//      address2: '',
+//      city: '',
+//      state: '',
+//      zipCode: '',
+//      phoneNum: '',
+//      CCNum: '',
+//      expiration: '',
+//      CVV: '',
+//      billingZip: '',
+//      activePage: 'HomePage',
+//      alreadyPurchased: false
+//    }
+//  }
+//
+//  componentDidMount() {
+//    axios.get('/checkout')
+//      .then((res) => {
+//        if (res) {
+//          this.setState({ alreadyPurchased: true })
+//        }
+//      })
+//  }
 
-  componentDidMount() {
+const App = () => {
+
+  const [state, setState] = useState({
+    sessionId: JSON.stringify(document.cookie, undefined, "\t").slice(6, -1),
+    name: '',
+    email: '',
+    password: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    phoneNum: '',
+    CCNum: '',
+    expiration: '',
+    CVV: '',
+    billingZip: '',
+    activePage: 'HomePage',
+    alreadyPurchased: false
+  })
+
+  useEffect(() => {
     axios.get('/checkout')
       .then((res) => {
         if (res) {
-          this.setState({ alreadyPurchased: true })
+          setState(previousState => {
+            return { ...previousState, alreadyPurchased: true }
+          });
         }
       })
+  }, [])
+
+  const handleChange = e => {
+    setState(previousState => {
+      return { ...previousState, [e.target.id]: e.target.value }
+    });
   }
 
-  handleChange(e) {
-    this.setState({ [e.target.id]: e.target.value })
+  const buttonHandler = e => {
+    e.preventDefault();
+    let nextPage = e.target.getAttribute('next');
+    setState(previousState => {
+      return { ...previousState, activePage: nextPage }
+    });
   }
 
-  buttonHandler(event) {
-    event.preventDefault();
-    let nextPage = event.target.getAttribute('next');
-    this.setState({ activePage: nextPage })
-  }
-
-  purchaseButtonHandler() {
-    this.sendData()
+  const purchaseButtonHandler = () => {
+    sendData()
       .then((res) => alert(res.data))
       .catch((err) => console.error(err))
   }
 
-  sendData() {
-    let userData = this.state;
+  const sendData = () => {
+    let userData = state;
     delete userData['activePage'];
     delete userData['alreadyPurchased'];
     return axios.post('/checkout', userData)
@@ -63,21 +100,21 @@ class App extends React.Component {
       .catch((err) => console.error(err))
   }
 
-  render() {
-    switch (this.state.activePage) {
-      case 'HomePage':
-        return <HomePage buttonHandler={this.buttonHandler.bind(this)} alreadyPurchased={this.state.alreadyPurchased} />;
-      case 'Form1':
-        return <Form1 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
-      case 'Form2':
-        return <Form2 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
-      case 'Form3':
-        return <Form3 buttonHandler={this.buttonHandler.bind(this)} handleChange={this.handleChange.bind(this)} appState={this.state} />;
-      case 'Confirmation':
-        return <Confirmation buttonHandler={this.buttonHandler.bind(this)} purchaseButtonHandler={this.purchaseButtonHandler.bind(this)} appState={this.state} />
-      default:
-        return <span>Error: Invalid Active Page</span>
-    }
+
+  switch (state.activePage) {
+    case 'HomePage':
+      return <HomePage buttonHandler={buttonHandler} alreadyPurchased={state.alreadyPurchased} />;
+    case 'Form1':
+      return <Form1 buttonHandler={buttonHandler} handleChange={handleChange} appState={state} />;
+    case 'Form2':
+      return <Form2 buttonHandler={buttonHandler} handleChange={handleChange} appState={state} />;
+    case 'Form3':
+      return <Form3 buttonHandler={buttonHandler} handleChange={handleChange} appState={state} />;
+    case 'Confirmation':
+      return <Confirmation buttonHandler={buttonHandler} purchaseButtonHandler={purchaseButtonHandler} appState={state} />
+    default:
+      return <span>Error: Invalid Active Page</span>
+
   }
 }
 

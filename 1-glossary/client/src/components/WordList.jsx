@@ -1,74 +1,74 @@
-import React from 'react';
+import { useState } from 'react';
 
-class WordList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      enteredWord: '',
-      enteredDef: ''
-    }
-  }
+//class WordList extends React.Component {
+//  constructor(props) {
+//    super(props);
+//    this.state = {
+//      enteredWord: '',
+//      enteredDef: ''
+//    }
+//  }
 
-  add() {
-    if (this.state.enteredWord === '' || this.state.enteredDef === '') {
+const WordList = props => {
+
+  const [enteredWord, setEnteredWord] = useState('');
+  const [enteredDef, setEnteredDef] = useState('');
+
+  const add = () => {
+    if (enteredWord === '' || enteredDef === '') {
       alert('Please enter word and definition')
     } else {
-      this.props.onAdd(this.state.enteredWord, this.state.enteredDef)
-      this.setState({ enteredWord: '', enteredDef: '' })
+      props.onAdd(enteredWord, enteredDef)
+      setEnteredWord('')
+      setEnteredDef('')
     }
   }
 
-  edit(e) {
+  const edit = e => {
     let index = e.target.id
     let newDef = prompt("Please enter new definition.")
-    this.props.onAdd(this.props.filteredWords[index].word, newDef, index)
+    props.onAdd(props.filteredWords[index].word, newDef, index)
   }
 
-  enterWord(e) {
-    this.setState({
-      enteredWord: e.target.value
-    });
+  const enterWord = e => {
+    setEnteredWord(e.target.value);
   }
 
-  enterDefinition(e) {
-    this.setState({
-      enteredDef: e.target.value
-    });
+  const enterDefinition = e => {
+    setEnteredDef(e.target.value);
   }
 
-  render() {
-    let index = -1;
-    return (
+  let index = -1;
+  return (
+    <>
+      <div id="inputDiv">
+        <input id="wordInput" placeholder="Enter word" value={enteredWord} onChange={enterWord}></input>
+        <input id="definitionInput" placeholder="Enter definition" value={enteredDef} onChange={enterDefinition}></input>
+        <button onClick={add}>Add Word</button>
+      </div>
       <div>
-        <div id="inputDiv">
-          <input id="wordInput" placeholder="Enter word" value={this.state.enteredWord} onChange={this.enterWord.bind(this)}></input>
-          <input id="definitionInput" placeholder="Enter definition" value={this.state.enteredDef} onChange={this.enterDefinition.bind(this)}></input>
-          <button onClick={this.add.bind(this)}>Add Word</button>
-        </div>
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Word</th>
-                <th>Definition</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.filteredWords.map((word) => {
-                index++
-                return (<tr>
-                  <td><b>{word.word}</b></td>
-                  <td>{word.definition}</td>
-                  <td><button onClick={this.edit.bind(this)} className="editButton" id={index}>Edit</button></td>
-                  <td><button onClick={this.props.deleteWord.bind(this)} className="deleteButton" id={word.word}>Delete</button></td>
-                </tr>)
-              }
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>)
-  }
+        <table>
+          <thead>
+            <tr>
+              <th>Word</th>
+              <th>Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.filteredWords.map((word) => {
+              index++
+              return (<tr>
+                <td><b>{word.word}</b></td>
+                <td>{word.definition}</td>
+                <td><button onClick={edit} className="editButton" id={index}>Edit</button></td>
+                <td><button onClick={props.deleteWord} className="deleteButton" id={word.word}>Delete</button></td>
+              </tr>)
+            }
+            )}
+          </tbody>
+        </table>
+      </div>
+    </>)
 }
 
 export default WordList;

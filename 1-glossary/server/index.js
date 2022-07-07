@@ -49,7 +49,7 @@ app.get('/words', (req, res) => {
 app.delete('/words', (req, res) => {
   console.log('Running Delete');
   let deletedWord = req.body.word;
-  console.log(deletedWord)
+  console.log('deletedWord in server: ', deletedWord)
   return remove(deletedWord)
     .then(() => {
       res.status(200);
