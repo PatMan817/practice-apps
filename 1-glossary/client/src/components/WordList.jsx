@@ -1,26 +1,17 @@
-import { useState } from 'react';
-
-//class WordList extends React.Component {
-//  constructor(props) {
-//    super(props);
-//    this.state = {
-//      enteredWord: '',
-//      enteredDef: ''
-//    }
-//  }
+import { useRef } from 'react';
 
 const WordList = props => {
 
-  const [enteredWord, setEnteredWord] = useState('');
-  const [enteredDef, setEnteredDef] = useState('');
+  const enteredWord = useRef();
+  const enteredDef = useRef();
 
   const add = () => {
-    if (enteredWord === '' || enteredDef === '') {
+    if (enteredWord.current.value === '' || enteredDef.current.value === '') {
       alert('Please enter word and definition')
     } else {
-      props.onAdd(enteredWord, enteredDef)
-      setEnteredWord('')
-      setEnteredDef('')
+      props.onAdd(enteredWord.current.value, enteredDef.current.value)
+      enteredWord.current.value = '';
+      enteredDef.current.value = '';
     }
   }
 
@@ -30,20 +21,12 @@ const WordList = props => {
     props.onAdd(props.filteredWords[index].word, newDef, index)
   }
 
-  const enterWord = e => {
-    setEnteredWord(e.target.value);
-  }
-
-  const enterDefinition = e => {
-    setEnteredDef(e.target.value);
-  }
-
   let index = -1;
   return (
     <>
       <div id="inputDiv">
-        <input id="wordInput" placeholder="Enter word" value={enteredWord} onChange={enterWord}></input>
-        <input id="definitionInput" placeholder="Enter definition" value={enteredDef} onChange={enterDefinition}></input>
+        <input id="wordInput" placeholder="Enter word" ref={enteredWord}></input>
+        <input id="definitionInput" placeholder="Enter definition" ref={enteredDef}></input>
         <button onClick={add}>Add Word</button>
       </div>
       <div>
