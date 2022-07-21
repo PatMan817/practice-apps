@@ -5,13 +5,12 @@ const save = require("./db.js").save;
 const getWords = require("./db.js").getWords;
 const remove = require("./db.js").remove;
 
-
 const app = express();
 
 // Serves up all static and generated assets in ../client/dist.
 //app.user(cores())
 app.use(express.static(path.join(__dirname, "../client/dist")));
-app.use(express.json())
+app.use(express.json());
 
 /****
  *
@@ -21,44 +20,44 @@ app.use(express.json())
  *
  */
 
-app.post('/words', (req, res) => {
-  console.log('Running Post')
+app.post("/words", (req, res) => {
+  console.log("Running Post");
   let newWordObj = req.body;
   return save(newWordObj)
     .then(() => {
       res.status(201);
-      res.send('Word Saved')
+      res.send("Word Saved");
     })
-    .catch((err) => err)
-})
+    .catch((err) => err);
+});
 
-app.get('/words', (req, res) => {
-  console.log('Running Get')
+app.get("/words", (req, res) => {
+  console.log("Running Get");
   getWords((err, data) => {
     if (err) {
-      res.status(404)
-      res.send('Words not Found')
+      res.status(404);
+      res.send("Words not Found");
     } else {
       res.status(200);
-      console.log('Sending Words')
-      res.send(data)
+      console.log("Sending Words");
+      res.send(data);
     }
-  })
-})
+  });
+});
 
-app.delete('/words', (req, res) => {
-  console.log('Running Delete');
+app.delete("/words", (req, res) => {
+  console.log("Running Delete");
   let deletedWord = req.body.word;
-  console.log('deletedWord in server: ', deletedWord)
+  console.log("deletedWord in server: ", deletedWord);
   return remove(deletedWord)
     .then(() => {
       res.status(200);
-      res.send('Word Deleted')
+      res.send("Word Deleted");
     })
-    .catch((err) => console.error(err))
-})
+    .catch((err) => console.error(err));
+});
 
-app.patch('/words', (req, res) => { })
+app.patch("/words", (req, res) => {});
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

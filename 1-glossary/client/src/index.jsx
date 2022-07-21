@@ -1,61 +1,70 @@
-import ReactDOM from 'react-dom';
-import Search from './components/Search.jsx';
-import WordList from './components/WordList.jsx';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import ReactDOM from "react-dom";
+import Search from "./components/Search.jsx";
+import WordList from "./components/WordList.jsx";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-const App = () => {
-
+function App() {
   const [words, setWords] = useState([]);
   const [filteredWords, setFilteredWords] = useState([]);
 
   useEffect(() => {
     getWords();
-  }, [])
+  }, []);
 
-  const addWord = (word, definition) => {
-    axios.post('/words', { word: word, definition: definition })
+  function addWord(word, definition) {
+    axios
+      .post("/words", { word: word, definition: definition })
       .then((response) => alert(response.data))
       .then(() => getWords())
-      .catch((error) => console.error(error))
+      .catch((error) => console.error(error));
   }
 
-  const deleteWord = e => {
+  function deleteWord(e) {
     let deletedWord = { word: e.target.id };
-    console.log('deletedWord:', deletedWord)
-    axios.delete('/words', { data: deletedWord })
+    console.log("deletedWord:", deletedWord);
+    axios
+      .delete("/words", { data: deletedWord })
       .then((response) => alert(response.data))
       .then(() => getWords())
-      .catch((err) => console.error(err))
+      .catch((err) => console.error(err));
   }
 
-  const getWords = () => {
-    axios.get('/words')
+  function getWords() {
+    axios
+      .get("/words")
       .then((wordData) => {
-      setWords(wordData.data)
-      setFilteredWords(wordData.data)
+        setWords(wordData.data);
+        setFilteredWords(wordData.data);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error(err));
   }
 
-  const search = searchedTerm => {
+  function search(searchedTerm) {
     let results = [];
-    console.log(searchedTerm)
+    console.log(searchedTerm);
     for (let i = 0; i < words.length; i++) {
-      if (words[i].word.includes(searchedTerm) || words[i].definition.includes(searchedTerm)) {
-        results.push(words[i])
+      if (
+        words[i].word.includes(searchedTerm) ||
+        words[i].definition.includes(searchedTerm)
+      ) {
+        results.push(words[i]);
       }
     }
-    setFilteredWords(results)
+    setFilteredWords(results);
   }
 
   return (
     <div>
       <h1>Glossary</h1>
       <Search search={search} />
-      <WordList filteredWords={filteredWords} deleteWord={deleteWord} onAdd={addWord} />
+      <WordList
+        filteredWords={filteredWords}
+        deleteWord={deleteWord}
+        onAdd={addWord}
+      />
     </div>
-  )
+  );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
