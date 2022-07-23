@@ -18,29 +18,35 @@ let glossarySchema = mongoose.Schema({
 
 let Entry = mongoose.model("Entry", glossarySchema);
 
-function remove(deletedWord) {
+async function remove(deletedWord) {
   console.log("calling delete in DB");
-  return Entry.deleteOne({ word: deletedWord });
+  try {
+    return await Entry.deleteOne({ word: deletedWord });
+  } catch (err) {
+    return console.error(err);
+  }
 }
 
-function save(wordObj) {
-  return Entry.find({ word: wordObj.word })
-    .then((array) => {
-      if (array.length > 0) {
-        return Entry.findOneAndDelete({ word: wordObj.word }).catch((err) =>
-          console.error(err)
-        );
-      }
-    })
-    .then(() => Entry.create(wordObj))
-    .then(() => "Word Saved")
-    .catch((err) => console.error(err));
+async function save(wordObj) {
+  try {
+    const array = await Entry.find({ word: wordObj.word });
+    if (array.length > 0) {
+      await Entry.findOneAndDelete({ word: wordObj.word });
+    }
+    await Entry.create(wordObj);
+    return "Word Saved";
+  } catch (err) {
+    return console.error(err);
+  }
 }
 
-function getWords(callback) {
-  //let wordArray = [];
+async function getWords() {
   console.log("calling getWords in DB");
-  Entry.find().sort({ word: 1 }).exec(callback);
+  try {
+    return await Entry.find().sort({ word: 1 });
+  } catch (err) {
+    return console.error(err);
+  }
 }
 // 3. Export the models
 module.exports.save = save;

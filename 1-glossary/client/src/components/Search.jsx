@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 function Search(props) {
-
   const searchRef = useRef();
 
   function search() {
@@ -10,9 +9,14 @@ function Search(props) {
 
   return (
     <>
-      <input placeholder="Definition or word" onChange={search} ref={searchRef}></input>
+      <input
+        placeholder="Definition or word"
+        onChange={search}
+        ref={searchRef}
+      ></input>
       <button onClick={search}>Search</button>
-    </>);
+    </>
+  );
 }
 
-export default Search
+export default Search;

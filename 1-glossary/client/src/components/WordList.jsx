@@ -1,41 +1,40 @@
 import { useRef } from "react";
 
-function WordList(props) {
+function WordList({ filteredWords, deleteWord, onAdd }) {
   const enteredWord = useRef();
   const enteredDef = useRef();
 
-  function add() {
-    if (enteredWord.current.value === "" || enteredDef.current.value === "") {
-      alert("Please enter word and definition");
-    } else {
-      props.onAdd(enteredWord.current.value, enteredDef.current.value);
-      enteredWord.current.value = "";
-      enteredDef.current.value = "";
-    }
+  function add(e) {
+    e.preventDefault();
+    onAdd(enteredWord.current.value, enteredDef.current.value);
+    enteredWord.current.value = "";
+    enteredDef.current.value = "";
   }
 
   function edit(e) {
     let index = e.target.id;
     let newDef = prompt("Please enter new definition.");
-    props.onAdd(props.filteredWords[index].word, newDef, index);
+    onAdd(filteredWords[index].word, newDef, index);
   }
 
   let index = -1;
   return (
     <>
-      <div id="inputDiv">
+      <form id="inputDiv" onSubmit={add}>
         <input
+          required
           id="wordInput"
           placeholder="Enter word"
           ref={enteredWord}
         ></input>
         <input
+          required
           id="definitionInput"
           placeholder="Enter definition"
           ref={enteredDef}
         ></input>
-        <button onClick={add}>Add Word</button>
-      </div>
+        <button type="submit">Add Word</button>
+      </form>
       <div>
         <table>
           <thead>
@@ -45,7 +44,7 @@ function WordList(props) {
             </tr>
           </thead>
           <tbody>
-            {props.filteredWords.map((word) => {
+            {filteredWords.map((word) => {
               index++;
               return (
                 <tr>
@@ -60,7 +59,7 @@ function WordList(props) {
                   </td>
                   <td>
                     <button
-                      onClick={props.deleteWord}
+                      onClick={deleteWord}
                       className="deleteButton"
                       id={word.word}
                     >
