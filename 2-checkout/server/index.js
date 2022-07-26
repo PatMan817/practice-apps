@@ -8,7 +8,7 @@ const logger = require("./middleware/logger");
 const db = require("./db").db;
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 // Adds `req.session_id` based on the incoming cookie value.
 // Generates a new session if one does not exist.
@@ -29,25 +29,26 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
  */
 const Response = require("./db").Response;
 
-app.post('/checkout', ((req, res) => {
+app.post("/checkout", (req, res) => {
+  console.log(req.body);
   Response.create(req.body)
-    .then(() => res.send('Purchase Successful'))
-    .catch((err) => console.error(err))
-}))
+    .then(() => res.send("Purchase Successful"))
+    .catch((err) => console.error(err));
+});
 
-app.get('/checkout', ((req, res) => {
+app.get("/checkout", (req, res) => {
   Response.findAll({
     where: {
-      sessionId: req.session_id
-    }
+      sessionId: req.session_id,
+    },
   })
     .then((data) => {
       if (data.length > 0) {
-        res.send(true)
+        res.send(true);
       }
     })
-    .catch((err) => console.error(err))
-}))
+    .catch((err) => console.error(err));
+});
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

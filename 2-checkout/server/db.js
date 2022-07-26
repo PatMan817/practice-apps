@@ -1,14 +1,19 @@
 const mysql = require("mysql2");
 const Promise = require("bluebird");
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
-const orm = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql',
-  define: { timestamps: false }
-})
+const orm = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+    define: { timestamps: false },
+  }
+);
 
-const Response = orm.define('response', {
+const Response = orm.define("response", {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   sessionId: { type: Sequelize.STRING, unique: true },
   name: Sequelize.STRING,
@@ -23,8 +28,8 @@ const Response = orm.define('response', {
   CCNum: Sequelize.BIGINT,
   expiration: Sequelize.STRING,
   CVV: Sequelize.INTEGER,
-  billingZip: Sequelize.STRING
-})
+  billingZip: Sequelize.STRING,
+});
 // Configure process.env variables in ../.env
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
