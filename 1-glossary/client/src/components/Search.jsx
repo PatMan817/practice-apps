@@ -1,10 +1,20 @@
 import { useRef } from "react";
 
-function Search(props) {
+function Search({ words, setFilteredWords }) {
   const searchRef = useRef();
 
   function search() {
-    props.search(searchRef.current.value);
+    let results = [];
+    console.log(searchedTerm);
+    for (let i = 0; i < words.length; i++) {
+      if (
+        words[i].word.includes(searchRef.current.value) ||
+        words[i].definition.includes(searchRef.current.value)
+      ) {
+        results.push(words[i]);
+      }
+    }
+    setFilteredWords(results);
   }
 
   return (

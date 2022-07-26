@@ -12,24 +12,6 @@ function App() {
     getWords();
   }, []);
 
-  function addWord(word, definition) {
-    axios
-      .post("/words", { word: word, definition: definition })
-      .then((response) => alert(response.data))
-      .then(() => getWords())
-      .catch((error) => console.error(error));
-  }
-
-  function deleteWord(e) {
-    let deletedWord = { word: e.target.id };
-    console.log("deletedWord:", deletedWord);
-    axios
-      .delete("/words", { data: deletedWord })
-      .then((response) => alert(response.data))
-      .then(() => getWords())
-      .catch((err) => console.error(err));
-  }
-
   function getWords() {
     axios
       .get("/words")
@@ -40,29 +22,11 @@ function App() {
       .catch((err) => console.error(err));
   }
 
-  function search(searchedTerm) {
-    let results = [];
-    console.log(searchedTerm);
-    for (let i = 0; i < words.length; i++) {
-      if (
-        words[i].word.includes(searchedTerm) ||
-        words[i].definition.includes(searchedTerm)
-      ) {
-        results.push(words[i]);
-      }
-    }
-    setFilteredWords(results);
-  }
-
   return (
     <div>
       <h1>Glossary</h1>
-      <Search search={search} />
-      <WordList
-        filteredWords={filteredWords}
-        deleteWord={deleteWord}
-        onAdd={addWord}
-      />
+      <Search words={words} setFilteredWords={setFilteredWords} />
+      <WordList filteredWords={filteredWords} getWords={getWords} />
     </div>
   );
 }

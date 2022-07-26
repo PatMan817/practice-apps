@@ -1,26 +1,48 @@
 import { useRef } from "react";
+import axios from "axios";
 
-function WordList({ filteredWords, deleteWord, onAdd }) {
+function WordList({ filteredWords, getWords }) {
   const enteredWord = useRef();
   const enteredDef = useRef();
 
-  function add(e) {
+  function addWord(e) {
     e.preventDefault();
-    onAdd(enteredWord.current.value, enteredDef.current.value);
+    axios
+      .post("/words", {
+        word: enteredWord.current.value,
+        definition: enteredDef.current.value,
+      })
+      .then(() => getWords())
+      .catch((error) => console.error(error));
     enteredWord.current.value = "";
     enteredDef.current.value = "";
+  }
+
+  function deleteWord(e) {
+    let deletedWord = { word: e.target.id };
+    console.log("deletedWord:", deletedWord);
+    axios
+      .delete("/words", { data: deletedWord })
+      .then(() => getWords())
+      .catch((err) => console.error(err));
   }
 
   function edit(e) {
     let index = e.target.id;
     let newDef = prompt("Please enter new definition.");
-    onAdd(filteredWords[index].word, newDef, index);
+    axios
+      .post("/words", {
+        word: filteredWords[index].word,
+        definition: newDef,
+      })
+      .then(() => getWords())
+      .catch((error) => console.error(error));
   }
 
   let index = -1;
   return (
     <>
-      <form id="inputDiv" onSubmit={add}>
+      <form id="inputDiv" onSubmit={addWord}>
         <input
           required
           id="wordInput"
